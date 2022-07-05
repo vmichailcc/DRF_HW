@@ -1,6 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import datetime
+from store.models import Store
+from store.serializers import StoreSerializer
+from rest_framework.status import HTTP_201_CREATED
+from rest_framework.views import APIView
 
 dt_today = datetime.datetime.now()
 
@@ -56,3 +60,16 @@ def calculator(request):
     return Response(result)
 
 # ?action=plus&number1=2&number2=3
+
+
+class StoreApiView(APIView):
+    def get(self, request, format=None):
+        stores = Store.objects.all()
+        serializers = StoreSerializer(stores, many=True)
+        return Response(serializers.data)
+
+    def post(self, request):
+        serializers = StoreSerializer(data=request.data)
+        serializers.is_valid(raise_exception=True)
+        serializers.save()
+        return Response(status=HTTP_201_CREATED, data=serializers.data)
