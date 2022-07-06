@@ -58,6 +58,8 @@ def calculator(request):
         return Response(result)
     else:
         raise ValueError("Input error")
+
+
 '''
 Для проверки калькулятора:
 {
