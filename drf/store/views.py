@@ -35,13 +35,13 @@ def my_name(request, name_of_hacker):
 @api_view()
 def calculator(request):
     params = request.query_params
-    result = ''
     action = params["action"]
+    result = ""
     try:
         number1 = int(params["number1"])
         number2 = int(params["number2"])
     except ValueError:
-        raise ValueError("Ошибка ввода. Введите число")
+        print("jib,rf")
 
     if action in ("minus", "plus", "divide", "multiply"):
         if action == "plus":
@@ -50,20 +50,21 @@ def calculator(request):
             result = number1 - number2
         if action == "multiply":
             result = number1 * number2
-        try:
-            if action == "divide" and number2 != 0:
+        if action == "divide":
+            if number2 != 0:
                 result = number1 / number2
-        except ValueError:
-            raise ValueError("number2 не может быть равен 0")
+            else:
+                raise ZeroDivisionError("Сannot be divided by 0")
+        return Response(result)
     else:
-        raise ValueError("Ошибка ввода. Введен не корректное знаяение action")
-    return Response(result)
+        raise ValueError("Input error")
 
+# Для проверки калькулятора:
 # ?action=plus&number1=2&number2=3
 
 
 class StoreApiView(APIView):
-    def get(self, request, format=None):
+    def get(self, request):
         stores = Store.objects.all()
         serializers = StoreSerializer(stores, many=True)
         return Response(serializers.data)
