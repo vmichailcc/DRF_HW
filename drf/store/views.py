@@ -32,9 +32,9 @@ def my_name(request, name_of_hacker):
     return Response(return_dict)
 
 
-@api_view()
+@api_view(http_method_names=["POST"])
 def calculator(request):
-    params = request.query_params
+    params = request.data
     action = params["action"]
     result = ""
     try:
@@ -58,9 +58,14 @@ def calculator(request):
         return Response(result)
     else:
         raise ValueError("Input error")
-
-# Для проверки калькулятора:
-# ?action=plus&number1=2&number2=3
+'''
+Для проверки калькулятора:
+{
+"action": "minus",
+"number1": 10,
+"number2": 5
+}
+'''
 
 
 class StoreApiView(APIView):
