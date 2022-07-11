@@ -1,8 +1,9 @@
-from django.urls import path, include
 from rest_framework import routers
-from .views import StoreViewSet
+from .views import StoreViewSet, MyStoreModelView
 
 
 router = routers.SimpleRouter()
 router.register('', StoreViewSet, basename='stores')
 
+my_stores_router = routers.SimpleRouter()
+my_stores_router.register('', MyStoreModelView, basename='my_stores')

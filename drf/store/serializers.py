@@ -11,4 +11,6 @@ class StoreSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "rating",
+            "owner",
+            "status",
         ]
