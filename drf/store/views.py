@@ -37,13 +37,13 @@ def my_name(request, name_of_hacker):
 @api_view(http_method_names=["POST"])
 def calculator(request):
     params = request.data
-    action = params["action"]
     result = ""
     try:
+        action = params["action"]
         number1 = int(params["number1"])
         number2 = int(params["number2"])
     except ValueError:
-        print("jib,rf")
+        raise ValueError("Input error")
 
     if action in ("minus", "plus", "divide", "multiply"):
         if action == "plus":
