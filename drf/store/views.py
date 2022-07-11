@@ -5,6 +5,8 @@ from store.models import Store
 from store.serializers import StoreSerializer
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 
 dt_today = datetime.datetime.now()
 
@@ -81,3 +83,8 @@ class StoreApiView(APIView):
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response(status=HTTP_201_CREATED, data=serializers.data)
+
+
+class StoreViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializer
