@@ -2,6 +2,7 @@ from rest_framework import serializers
 from store.models import Store
 
 
+
 class StoreSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -14,3 +15,4 @@ class StoreSerializer(serializers.ModelSerializer):
             "owner",
             "status",
         ]
+        read_only_fields = ["owner", "status"]

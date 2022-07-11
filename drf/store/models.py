@@ -16,13 +16,13 @@ class Store(models.Model):
     )
     status = models.CharField(
         choices=(
+            ("in_review", "In Review"),
             ("active", "Active"),
             ("deactivated", "Deactivated"),
-            ("in_review", "In Review"),
         ),
         max_length=11,
         default="in_review"
     )
 
     class Meta:
-        ordering = ["title"]
+        ordering = ["-id"]

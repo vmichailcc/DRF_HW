@@ -93,3 +93,10 @@ class StoreViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 class MyStoreModelView(ModelViewSet):
     queryset = Store.objects.all()
     serializer_class = StoreSerializer
+
+    def perform_create(self, serializer):
+        print(self.request.user)
+        if self.request.user.is_authenticated:
+            serializer.save(**{'owner': self.request.user})
+        else:
+            serializer.save()
