@@ -7,6 +7,8 @@ from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.permissions import IsAuthenticated
+
 
 dt_today = datetime.datetime.now()
 
@@ -91,12 +93,12 @@ class StoreViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 
 class MyStoreModelView(ModelViewSet):
-    queryset = Store.objects.all()
     serializer_class = StoreSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        print(self.request.user)
-        if self.request.user.is_authenticated:
-            serializer.save(**{'owner': self.request.user})
-        else:
-            serializer.save()
+        serializer.save(**{'owner': self.request.user})
+
+    def get_queryset(self):
+        user = self.request.user
+        return Store.objects.filter(owner=user.pk)

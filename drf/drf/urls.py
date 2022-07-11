@@ -11,5 +11,5 @@ urlpatterns = [
     path('store/', StoreApiView.as_view()),
     path('stores/', include(router.urls)),
     path('my_stores/', include(my_stores_router.urls)),
-    path('<str:name_of_hacker>/', my_name),
+    path('my_name/<str:name_of_hacker>/', my_name),
 ]
