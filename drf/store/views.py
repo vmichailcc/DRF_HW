@@ -1,3 +1,5 @@
+from typing import List
+
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 import datetime
@@ -8,6 +10,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 dt_today = datetime.datetime.now()
 
@@ -126,6 +130,9 @@ class AdminStories(ModelViewSet):
     serializer_class = StoreSerializer
     permission_classes = [IsAdminUser]
     http_method_names = ['get', 'post']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["status"]
+    search_fields = ['title']
 
     @action(detail=True, methods=['post'])
     def mark_as_active(self, request, pk=None):
