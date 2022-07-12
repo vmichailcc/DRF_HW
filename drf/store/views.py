@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 import datetime
 from store.models import Store
@@ -7,8 +7,7 @@ from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 dt_today = datetime.datetime.now()
 
@@ -102,3 +101,37 @@ class MyStoreModelView(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Store.objects.filter(owner=user.pk)
+
+    @action(detail=True, methods=['post'])
+    def mark_as_active(self, request, pk=None):
+        mark = self.get_object()
+        if mark.status == "deactivated":
+            mark.status = "active"
+            mark.save()
+        serializer = self.get_serializer(mark)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def mark_as_deactivated(self, request, pk=None):
+        mark = self.get_object()
+        if mark.status == "active":
+            mark.status = "deactivated"
+            mark.save()
+        serializer = self.get_serializer(mark)
+        return Response(serializer.data)
+
+
+class AdminStories(ModelViewSet):
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializer
+    permission_classes = [IsAdminUser]
+    http_method_names = ['get', 'post']
+
+    @action(detail=True, methods=['post'])
+    def mark_as_active(self, request, pk=None):
+        mark = self.get_object()
+        if mark.status == "in_review":
+            mark.status = "active"
+            mark.save()
+        serializer = self.get_serializer(mark)
+        return Response(serializer.data)

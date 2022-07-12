@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from store.views import hello_world, today, my_name, calculator, StoreApiView
-from store.urls import router, my_stores_router
+from store.urls import router, my_stores_router, admin_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('store/', StoreApiView.as_view()),
     path('stores/', include(router.urls)),
     path('my_stores/', include(my_stores_router.urls)),
+    path('admin_stores/', include(admin_router.urls)),
     path('my_name/<str:name_of_hacker>/', my_name),
 ]
