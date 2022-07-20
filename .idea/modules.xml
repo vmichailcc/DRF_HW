@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DRF HW.iml" filepath="$PROJECT_DIR$/.idea/DRF HW.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/learn_drf.iml" filepath="$PROJECT_DIR$/.idea/learn_drf.iml" />
     </modules>
   </component>
 </project>
